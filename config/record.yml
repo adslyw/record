@@ -1,0 +1,6 @@
+:default:
+  :host: "your_host"
+  :port: "your_port"
+  :database: "your_database"
+  :username: "your_user_name"
+  :password: "your_pass_word"
