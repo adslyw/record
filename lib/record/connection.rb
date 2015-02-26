@@ -4,13 +4,14 @@ begin
 rescue LoadError => e
   # OCI8 driver is unavailable or failed to load a required library.
   raise LoadError, "ERROR: '#{e.message}'. "\
-    "ActiveRecord oracle_enhanced adapter could not load ruby-oci8 library. "\
+    "Could not load ruby-oci8 library. "\
     "You may need install ruby-oci8 gem."
 end
 module  Record
   class Connection
     def initialize(config)
-      @raw_connection = OciFactory.new(config)
+      @config = config
+      @raw_connection = OciFactory.new_connection(@config)
     end
     def exec(sql, *bindvars, &block)
        @raw_connection.exec(sql, *bindvars, &block)
@@ -53,7 +54,7 @@ module  Record
         hash = column_hash.dup
 
         cols.each_with_index do |col, i|
-          hash[col] = row[i]
+          hash[col.to_sym] = row[i]
         end
 
         rows << hash

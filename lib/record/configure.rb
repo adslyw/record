@@ -2,7 +2,7 @@ require 'yaml'
 module Record
   class Configure
     def initialize(config_name = nil)
-      @config_name ||= :default
+      @config_name = config_name || :default
       @config = YAML.load(File.open(Rails.root.join('config', 'record.yml')))[@config_name] || {}
     end
     def settings
