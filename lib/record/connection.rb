@@ -37,7 +37,7 @@ module  Record
         @raw_cursor.close
       end
     end
-    def select(sql,return_column_names = false)
+    def select(sql,return_column_names = true)
       cursor = @raw_connection.exec(sql)
       cols = []
       # Ignore raw_rnum_ which is used to simulate LIMIT and OFFSET
@@ -46,12 +46,12 @@ module  Record
         cols << col_name unless col_name == 'raw_rnum_'
       end
       # Reuse the same hash for all rows
-      column_hash = {}
-      cols.each {|c| column_hash[c] = nil}
+      #column_hash = {}
+      #cols.each {|c| column_hash[c] = nil}
       rows = []
-
+      hash = {}
       while row = cursor.fetch
-        hash = column_hash.dup
+        #hash = column_hash.dup
 
         cols.each_with_index do |col, i|
           hash[col.to_sym] = row[i]
@@ -60,7 +60,7 @@ module  Record
         rows << hash
       end
 
-      return_column_names ? [rows, cols] : rows
+      return_column_names ? [cols, rows] : rows
       ensure
       cursor.close if cursor
     end

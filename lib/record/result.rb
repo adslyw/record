@@ -1,67 +1,58 @@
 module Record
   class Result
     include Enumerable
-    attr_reader :columns, :rows, :column_types
-    def initialize(columns, rows, column_types = {})
+    attr_reader :columns, :rows
+    def initialize(columns, rows)
       @columns = columns
-      @rows = rows
-      @hash_rows = nil
-      @column_types = column_types
+      @rows = rows.map{ |row| Row.new(row)}
     end
-
+    alias :length :count
     def length
       @rows.length
     end
 
     def each
       if block_given?
-        hash_rows.each { |row| yield row }
+        @rows.each { |row| yield row }
       else
-        hash_rows.to_enum { @rows.size}
+        @rows.to_enum { @rows.size}
       end
     end
 
     def to_hash
-      hash_rows
+      @rows
     end
-
-    alias :map! :map
-    alias :collect! :map
 
     def empty?
-      rows.empty?
+      @rows.empty?
     end
-
-    def to_array
-      hash_rows
+    alias :to_array :to_a
+    def to_array(column_names = false)
+      rows_a = @rows.map{ |row| row.to_array}
+      column_names ? [@columns].concat(rows_a) : rows_a
     end
 
     def [](idx)
-      hash_rows[idx]
+      @rows[idx]
     end
 
     def last
-      hash_rows.last
+      @rows.last
     end
 
-    private
-
-      def hash_rows
-        @hash_rows ||=
-          begin
-            columns = @columns
-            @rows.map { |row|
-              hash = {}
-              index = 0
-              length = columns.length
-              while index < length
-                hash[columns[index]] = row[index]
-                index += 1
-              end
-              hash
-            }
-          end
+    class Row
+      def initialize(row)
+        @row = row
       end
-
+      def to_s(header = false)
+        header ? [@row.keys,@row.values] : @row.values
+      end
+      def to_array
+        @row.values
+      end
+      def method_missing(method)
+        @row.fetch method.to_sym
+      end
+    end
   end
 end

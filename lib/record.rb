@@ -22,12 +22,19 @@ module Record
         :nls_time_format         => nil,
         :nls_time_tz_format      => nil
       }
-  class Base
-    attr_accessor :connection, :result
-    def initialize
+  class Executor
+    attr_accessor :connection, :config, :result
+    def initialize(config = :default)
       @result = nil
-      @config = Configure.new
-      @connection = Connection.new(@config.settings)
+      @config = config
+      @connection = Connection.new(Configure.new(@config).settings)
+    end
+    def query(sql)
+      cols, rows = @connection.select(sql)
+      @result = Result.new(cols, rows)
+    end
+    def exec(sql)
+      @connection.exec(sql)
     end
   end
 end

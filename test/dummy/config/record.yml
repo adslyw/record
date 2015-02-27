@@ -1,6 +1,18 @@
 :default:
-  :host: "your_host"
-  :port: "your_port"
-  :database: "your_database"
-  :username: "your_user_name"
-  :password: "your_pass_word"
+  :host: '130.84.1.112'
+  :port: 1521
+  :database: 'bssbill1'
+  :username: 'sx_sl'
+  :password: 'Dw56H1XO'
+:bcv:
+  :host: '130.84.1.112'
+  :port: 1521
+  :database: 'bssbill1'
+  :username: 'sx_sl'
+  :password: 'Dw56H1XO'
+:crm:
+  :host: '130.84.1.122'
+  :port: 1521
+  :database: 'bsscrm1'
+  :username: 'sx_sl'
+  :password: 'Dw56H1XO'
