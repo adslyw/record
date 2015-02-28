@@ -36,5 +36,13 @@ module Record
     def exec(sql)
       @connection.exec(sql)
     end
+    def make_database_link(link_name)
+      config = Configure.new(@config)
+      user_name = config.settings[:username]
+      pass_word = config.settings[:password]
+      description = config.description
+      sql = "create database link #{link_name} connect to #{user_name} identified by #{pass_word} using '#{description}'"
+      exec sql
+    end
   end
 end
