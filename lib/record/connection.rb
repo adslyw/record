@@ -49,17 +49,15 @@ module  Record
       #column_hash = {}
       #cols.each {|c| column_hash[c] = nil}
       rows = []
-      hash = {}
       while row = cursor.fetch
-        #hash = column_hash.dup
-
+        hash = {}
         cols.each_with_index do |col, i|
           hash[col.to_sym] = row[i]
         end
-
+        p hash
         rows << hash
+        p rows
       end
-
       return_column_names ? [cols, rows] : rows
       ensure
       cursor.close if cursor

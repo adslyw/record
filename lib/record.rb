@@ -36,8 +36,8 @@ module Record
     def exec(sql)
       @connection.exec(sql)
     end
-    def make_database_link(link_name)
-      config = Configure.new(@config)
+    def make_database_link(config_name,link_name)
+      config = Configure.new(config_name)
       user_name = config.settings[:username]
       pass_word = config.settings[:password]
       description = config.description
