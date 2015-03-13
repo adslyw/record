@@ -54,9 +54,7 @@ module  Record
         cols.each_with_index do |col, i|
           hash[col.to_sym] = row[i]
         end
-        p hash
         rows << hash
-        p rows
       end
       return_column_names ? [cols, rows] : rows
       ensure
