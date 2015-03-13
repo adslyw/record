@@ -4,7 +4,7 @@ module Record
     attr_reader :columns, :rows
     def initialize(columns, rows)
       @columns = columns
-      @rows = rows.each{ |row| Row.new(row)}
+      @rows = rows.map{ |row| Row.new(row)}
     end
     alias :length :count
     def length
